@@ -1,0 +1,5 @@
+service:
+  name: "test-repo-minimal"
+  team: ""
+  description: ""
+  links: []
