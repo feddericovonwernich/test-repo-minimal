@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight UTC
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run tests
+        run: |
+          echo "Running dummy tests..."
+          # In a real project, this would be npm test or similar
+          bash tests/test.sh
+
+  scorecards-check:
+    name: Scorecards Quality Check
+    uses: feddericovonwernich/scorecards/.github/workflows/install.yml@main
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      scorecards-catalog-token: ${{ secrets.SCORECARDS_CATALOG_TOKEN }}
+      scorecards-workflow-token: ${{ secrets.SCORECARDS_WORKFLOW_TOKEN }}
+    with:
+      scorecards-repo: 'feddericovonwernich/scorecards'
+      scorecards-branch: 'catalog'
