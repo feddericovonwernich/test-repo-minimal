@@ -3,3 +3,7 @@ service:
   team: ""
   description: ""
   links: []
+
+excluded_checks:
+  - check: "06-openapi-spec"
+    reason: "Test exclusion - verifying check exclusion feature"
