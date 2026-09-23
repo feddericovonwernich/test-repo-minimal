@@ -1,0 +1,23 @@
+name: Producer Validation
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  producer-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout proposed changes
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Validate producer contract
+        # yq and Python are preinstalled on the Ubuntu 24.04 runner.
+        # Parse configuration only; never execute the scoring action here.
+        run: |
+          set -euo pipefail
+          yq -o=json '.' .github/workflows/scorecards.yml | python3 tests/check_producer.py
